@@ -2,6 +2,9 @@
 
 PureChat by 64FF00 is a plugin for PurePerms that provides custom chat format for server owners.
 
+### FactionsPE support
+This modified version includes the support for [FactionsPE](https://github.com/BlockHorizons/FactionsPE) plugin
+
 # Commands
 
 Command | Description | Permission
