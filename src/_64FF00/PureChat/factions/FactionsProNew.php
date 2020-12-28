@@ -38,7 +38,7 @@ class FactionsProNew implements FactionsInterface
      */
     public function getPlayerFaction(Player $player)
     {
-        return $this->getAPI()->getSession($player)->getFaction();
+        return $this->getAPI()->getFaction($player->getName());
     }
 
     /**
@@ -47,12 +47,12 @@ class FactionsProNew implements FactionsInterface
      */
     public function getPlayerRank(Player $player)
     {
-        if($this->getAPI()->getSession($player)->inFaction())
+        if($this->getAPI()->isInFaction($player->getName()))
         {
-            if($this->getAPI()->getSession($player)->isOfficer()) {
+            if($this->getAPI()->isOfficer($player->getName())) {
                 return '*';
             }
-            elseif($this->getAPI()->getSession($player)->isLeader())
+            elseif($this->getAPI()->isLeader($player->getName()))
             {
                 return '**';
             }

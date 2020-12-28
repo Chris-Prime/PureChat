@@ -347,19 +347,21 @@ class PureChat extends PluginBase
 
                     if($factionsPro !== null)
                     {
-                        if(version_compare($factionsPro->getDescription()->getVersion(), "1.5b1") === -1)
+                        if(version_compare($factionsPro->getDescription()->getVersion(), "1.4.0") === -1)
                         {
                             $this->factionsAPI = new FactionsProOld();
 
-                            $this->getLogger()->notice("FactionsPro-OLD support enabled.");
+                            $this->getLogger()->notice("FactionsPro < 1.4 support enabled.");
 
+                            break;
                         }
                         else
                         {
                             $this->factionsAPI = new FactionsProNew();
 
-                            $this->getLogger()->notice("FactionsPro-NEW support enabled.");
+                            $this->getLogger()->notice("FactionsPro >= 1.4 support enabled.");
 
+                            break;
                         }
                     }
 
