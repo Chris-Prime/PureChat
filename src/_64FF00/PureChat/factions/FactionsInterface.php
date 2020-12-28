@@ -19,6 +19,8 @@ interface FactionsInterface
           888  888    "Y8888P"        888  888        888        "Y8888P"   "Y8888P"
     */
 
+    public function hasFaction(Player $player) : bool;
+
     public function getAPI();
 
     public function getPlayerFaction(Player $player);

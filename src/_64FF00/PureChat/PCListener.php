@@ -2,13 +2,13 @@
 
 namespace _64FF00\PureChat;
 
-use _64FF00\PurePerms\event\PPGroupChangedEvent;
+use pocketmine\Player;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 
-use pocketmine\Player;
+use _64FF00\PurePerms\event\PPGroupChangedEvent;
 
 class PCListener implements Listener
 {
@@ -72,7 +72,7 @@ class PCListener implements Listener
     public function onPlayerChat(PlayerChatEvent $event)
     {
 		if ($event->isCancelled()) return;
-		$player = $event->getPlayer();
+    		$player = $event->getPlayer();
         $message = $event->getMessage();
 
         $levelName = $this->plugin->getConfig()->get("enable-multiworld-chat") ? $player->getLevel()->getName() : null;

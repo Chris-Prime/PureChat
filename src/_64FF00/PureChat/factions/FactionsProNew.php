@@ -28,13 +28,17 @@ class FactionsProNew implements FactionsInterface
         return Server::getInstance()->getPluginManager()->getPlugin("FactionsPro");
     }
 
+    public function hasFaction(Player $player) : bool {
+      return !empty($this->getPlayerFaction($player));
+    }
+
     /**
      * @param Player $player
      * @return string
      */
     public function getPlayerFaction(Player $player)
     {
-        return $this->getAPI()->getFaction($player->getName());
+        return $this->getAPI()->getSession($player)->getFaction();
     }
 
     /**
@@ -43,12 +47,12 @@ class FactionsProNew implements FactionsInterface
      */
     public function getPlayerRank(Player $player)
     {
-        if($this->getAPI()->isInFaction($player->getName()))
+        if($this->getAPI()->getSession($player)->inFaction())
         {
-            if($this->getAPI()->isOfficer($player->getName())) {
+            if($this->getAPI()->getSession($player)->isOfficer()) {
                 return '*';
             }
-            elseif($this->getAPI()->isLeader($player->getName()))
+            elseif($this->getAPI()->getSession($player)->isLeader())
             {
                 return '**';
             }

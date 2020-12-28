@@ -28,6 +28,10 @@ class XeviousPE_Factions implements FactionsInterface
         return Server::getInstance()->getPluginManager()->getPlugin("XeviousPE-Factions");
     }
 
+    public function hasFaction(Player $player) : bool {
+      return $this->getPlayerFaction($player) !== null;
+    }
+
     /**
      * @param Player $player
      * @return mixed

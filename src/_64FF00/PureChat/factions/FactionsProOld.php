@@ -28,6 +28,10 @@ class FactionsProOld implements FactionsInterface
         return Server::getInstance()->getPluginManager()->getPlugin("FactionsPro");
     }
 
+    public function hasFaction(Player $player) : bool {
+      return !empty($this->getPlayerFaction($player));
+    }
+
     /**
      * @param Player $player
      * @return string

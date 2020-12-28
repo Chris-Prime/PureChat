@@ -6,6 +6,7 @@ use _64FF00\PureChat\factions\FactionsInterface;
 use _64FF00\PureChat\factions\FactionsProNew;
 use _64FF00\PureChat\factions\FactionsProOld;
 use _64FF00\PureChat\factions\XeviousPE_Factions;
+use _64FF00\PureChat\factions\FactionsPE;
 
 use _64FF00\PurePerms\PPGroup;
 
@@ -76,7 +77,8 @@ class PureChat extends PluginBase
      * @param string $label
      * @param array $args
      */
-    public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args) : bool{
+    public function onCommand(CommandSender $sender, Command $cmd, $label, array $args) : bool
+    {
         switch(strtolower($cmd->getName()))
         {
             case "setformat":
@@ -335,11 +337,7 @@ class PureChat extends PluginBase
     {
         $factionsPluginName = $this->config->get("default-factions-plugin");
 
-        if($factionsPluginName === null)
-        {
-            $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
-        }
-        else
+        if($factionsPluginName !== null)
         {
             switch(strtolower($factionsPluginName))
             {
@@ -349,25 +347,21 @@ class PureChat extends PluginBase
 
                     if($factionsPro !== null)
                     {
-                        if(version_compare($factionsPro->getDescription()->getVersion(), "1.4.0") === -1)
+                        if(version_compare($factionsPro->getDescription()->getVersion(), "1.5b1") === -1)
                         {
                             $this->factionsAPI = new FactionsProOld();
 
-                            $this->getLogger()->notice("FactionsPro < 1.4 support enabled.");
+                            $this->getLogger()->notice("FactionsPro-OLD support enabled.");
 
-                            break;
                         }
                         else
                         {
                             $this->factionsAPI = new FactionsProNew();
 
-                            $this->getLogger()->notice("FactionsPro >= 1.4 support enabled.");
+                            $this->getLogger()->notice("FactionsPro-NEW support enabled.");
 
-                            break;
                         }
                     }
-
-                    $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
 
                     break;
 
@@ -378,19 +372,26 @@ class PureChat extends PluginBase
                         $this->factionsAPI = new XeviousPE_Factions();
 
                         $this->getLogger()->notice("XeviousPE-Factions support enabled.");
-
-                        break;
                     }
 
-                    $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
-
                     break;
 
+                case "factionspe":
+                    
+                    if($this->getServer()->getPluginManager()->getPlugin("FactionsPE") !== null) 
+                    {
+                        $this->factionsAPI = new FactionsPE();
+
+                        $this->getLogger()->notice("FactionsPE support enabled");
+                    }
+
+                    break;
+                
                 default:
-
-                    $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
-
                     break;
+            }
+            if($this->factionsAPI === null) {
+                $this->getLogger()->notice("No valid factions plugin in default-factions-plugin node was found. Disabling factions plugin support.");
             }
         }
     }
@@ -464,11 +465,18 @@ class PureChat extends PluginBase
 
         if($this->factionsAPI !== null)
         {
-            $string = str_replace("{fac_name}", $this->factionsAPI->getPlayerFaction($player), $string);
-            $string = str_replace("{fac_rank}", $this->factionsAPI->getPlayerRank($player), $string);
+            if($this->factionsAPI->hasFaction($player)) {
+                $string = str_replace("{faction_tag}", $this->getFactionTag($player, $levelName), $string);
+                $string = str_replace("{fac_name}", $this->factionsAPI->getPlayerFaction($player), $string);
+                $string = str_replace("{fac_rank}", $this->factionsAPI->getPlayerRank($player), $string);
+                $string = $this->applyColors($string);
+            } else {
+                $string = str_replace("{faction_tag}", '', $string);
+            }
         }
         else
         {
+            $string = str_replace("{faction_tag}", '', $string);
             $string = str_replace("{fac_name}", '', $string);
             $string = str_replace("{fac_rank}", '', $string);
         }
@@ -550,6 +558,40 @@ class PureChat extends PluginBase
 
             return $this->config->getNested("groups." . $group->getName() . "worlds.$levelName.chat");
         }
+    }
+
+    public function getFactionTag(Player $player, $levelName = null) {
+        /** @var \_64FF00\PurePerms\PPGroup $group */
+        $group = $this->purePerms->getUserDataMgr()->getGroup($player, $levelName);
+
+        if($levelName === null)
+        {
+            if($this->config->getNested("groups." . $group->getName() . ".faction-tag") === null)
+            {
+                $this->getLogger()->critical("Invalid faction tag found in config.yml (Group: " . $group->getName() . ") / Setting it to default value.");
+
+                $this->config->setNested("groups." . $group->getName() . ".faction-tag", "[{fac_rank}{fac_rank}]");
+
+                $this->config->save();
+                $this->config->reload();
+            }
+
+            return $this->config->getNested("groups." . $group->getName() . ".faction-tag");
+        }
+        else
+        {
+            if($this->config->getNested("groups." . $group->getName() . "worlds.$levelName.faction-tag") === null)
+            {
+                $this->getLogger()->critical("Invalid faction-tag found in config.yml (Group: " . $group->getName() . ", WorldName = $levelName) / Setting it to default value.");
+
+                $this->config->setNested("groups." . $group->getName() . "worlds.$levelName.faction-tag", "");
+
+                $this->config->save();
+                $this->config->reload();
+            }
+
+            return $this->config->getNested("groups." . $group->getName() . "worlds.$levelName.faction-tag");
+        }  
     }
 
     public function getOriginalNametag(Player $player, $levelName = null)
