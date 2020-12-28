@@ -6,7 +6,7 @@ load: POSTWORLD
 author: 64FF00
 website: https://github.com/PurePlugins/PureChat
 depend: [PurePerms]
-softdepend: [FactionsPro, XeviousPE-Factions]
+softdepend: [FactionsPro, XeviousPE-Factions, FactionsPE]
 commands:
   setformat:
       description: "Allows you to set default chat format of a PurePerms group"

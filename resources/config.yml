@@ -8,8 +8,8 @@
 version: "1.4.10-6"
 
 # Set default factions plugin for PureChat
-# - FactionsPro / null
-default-factions-plugin: FactionsPro
+# - FactionsPro / FactionsPE / null
+default-factions-plugin: ~
 
 # Enable this if you want to use per-world chat formats / per-world nametags for players
 # - true / false
@@ -24,19 +24,23 @@ enable-multiworld-chat: false
 # Available PureChat tags: {display_name}, {msg}, {fac_name}, {fac_rank}, {prefix}, {suffix}, {world}
 groups:
   Guest:
-    chat: '&7[Guest] &f{fac_rank}{fac_name}&a {display_name} &7> &f{msg}'
-    nametag: '&7[Guest] &f{display_name}'
+    faction-tag: "[{fac_rank}{fac_name}]"
+    chat: "&3&l{prefix}&e{faction_tag}[Guest]&f&r {display_name} &7> {msg}"
+    nametag: "&3&l{prefix}&e[Guest]&f&r {display_name}"
     worlds: []
   Admin:
-    chat: '&c[Admin] &7{fac_rank}{fac_name}&6 {display_name} &d>&b {msg}'
-    nametag: '&a[Admin]&e {fac_rank}{fac_name} &6{display_name}'
+    faction-tag: "[{fac_rank}{fac_name}]"
+    chat: "&3&l{prefix}&c{faction_tag}[Admin]&f&r {display_name} &7> {msg}"
+    nametag: "&3&l{prefix}&c[Admin]&f&r {display_name}"
     worlds: []
   Owner:
-    chat: '&d[Owner] &c{fac_rank}{fac_name} &b{display_name} &c>&6> &b{msg}'
-    nametag: '&d[Owner]&c {fac_rank}{fac_name} &b{display_name}'
+    faction-tag: "[{fac_rank}{fac_name}]"
+    chat: "&3&l{prefix}&a{faction_tag}[Owner]&f&r {display_name} &7> {msg}"
+    nametag: "&3&l{prefix}&a[Owner]&f&r {display_name}"
     worlds: []
   OP:
-    chat: '&a[OP] &5{fac_rank}{fac_name}&b {prefix}{display_name}{suffix} &c>&6> &f{msg}'
-    nametag: '&a[OP] &c{fac_rank}{fac_name} &b{display_name}'
+    faction-tag: "[{fac_rank}{fac_name}]"
+    chat: "&3&l{prefix}&9{faction_tag}[OP]&f&r {display_name} &7> {msg}"
+    nametag: "&3&l{prefix}&9[OP]&f&r {display_name}"
     worlds: []
 ...
