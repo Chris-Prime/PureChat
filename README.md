@@ -5,6 +5,9 @@ PureChat by 64FF00 is a plugin for PurePerms that provides custom chat format fo
 ### FactionsPE support
 This modified version includes the support for [FactionsPE](https://github.com/BlockHorizons/FactionsPE) v1.4.1 plugin
 
+### Download
+Download latest release [here](https://github.com/Kris-Driv/PureChat/releases/tag/v1.4.11)
+
 # Commands
 
 Command | Description | Permission
