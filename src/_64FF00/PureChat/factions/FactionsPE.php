@@ -4,9 +4,9 @@ namespace _64FF00\PureChat\factions;
 
 use pocketmine\Player;
 
-use fpe\FactionsPE as FPE;
-use fpe\engine\ChatEngine;
-use fpe\manager\Members;
+use BlockHorizons\FactionsPE\FactionsPE as FPE;
+use BlockHorizons\FactionsPE\engine\ChatEngine;
+use BlockHorizons\FactionsPE\manager\Members;
 
 class FactionsPE implements FactionsInterface
 {
